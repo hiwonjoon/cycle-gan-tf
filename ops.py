@@ -51,7 +51,6 @@ class TransposedConv2d(object):
 
 class InstanceNorm():
     def __init__(self,name,format='NCHW',epsilon=1e-5) :
-        #axis 2,3 for 'NCHW'
         assert(format=='NCHW' or format=='NHWC')
         self.axis = [2,3] if format == 'NCHW' else [1,2]
 

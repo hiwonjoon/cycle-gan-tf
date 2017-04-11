@@ -7,13 +7,13 @@ def build_enc_dec(source,reuse=False) :
     with tf.variable_scope('encoder') as s:
         encoder_spec = [
             Conv2d('conv2d_1',channels,32,7,7,1,1),
-            Lrelu(), #64,SEQ_LEN//2
+            Lrelu(),
         ]
         for l,(in_,out_) in enumerate([(32,64),(64,128)]):
             encoder_spec +=[
                 Conv2d('conv2d_%d'%(l+2),in_,out_,3,3,2,2),
                 InstanceNorm('conv2d_in_%d'%(l+2)),
-                Lrelu(), #64,SEQ_LEN//2
+                Lrelu(),
             ]
         for l in xrange(9) :
             encoder_spec +=[
@@ -51,7 +51,7 @@ def build_critic(_t) :
         c_spec +=[
             Conv2d('conv2d_%d'%(l+1),in_,out_,4,4,2,2),
             #InstanceNorm('conv2d_in_%d'%(l+1)),
-            Lrelu(), #64,SEQ_LEN//2
+            Lrelu(),
         ]
     c_spec += [
         Linear('linear_1',512,512),

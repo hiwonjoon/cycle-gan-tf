@@ -1,4 +1,3 @@
-#TODO: If it does not work, then scale down to MNIST.(styles:number, character:font style)
 import numpy as np
 import random
 from ops import *
