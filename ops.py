@@ -18,17 +18,15 @@ class Conv2d(object) :
 
 class Linear(object) :
     def __init__(self,name,input_dim,output_dim,stddev=0.02) :
-        self.nElems = input_dim
-
         with tf.variable_scope(name) :
-            self.w = tf.get_variable('w',[self.nElems, output_dim],
+            self.w = tf.get_variable('w',[input_dim, output_dim],
                                 initializer=tf.random_normal_initializer(stddev=stddev))
             self.b = tf.get_variable('b',[output_dim],
                                 initializer=tf.constant_initializer(0.0))
 
     def __call__(self,input_var,name=None) :
         if( input_var.get_shape().dims > 2 ) :
-            return tf.matmul(tf.reshape(input_var,[-1,self.nElems]),self.w) + self.b
+            return tf.matmul(tf.reshape(input_var,[tf.shape(input_var)[0],-1]),self.w) + self.b
         else :
             return tf.matmul(input_var,self.w)+self.b
 

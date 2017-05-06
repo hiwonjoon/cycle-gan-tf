@@ -11,7 +11,7 @@ def build_enc_dec(source,reuse=False) :
         ]
         for l,(in_,out_) in enumerate([(32,64),(64,128)]):
             encoder_spec +=[
-                Conv2d('conv2d_%d'%(l+2),in_,out_,3,3,2,2),
+                Conv2d('conv2d_%d'%(l+2),in_,out_,4,4,2,2),
                 InstanceNorm('conv2d_in_%d'%(l+2)),
                 Lrelu(),
             ]
@@ -23,7 +23,7 @@ def build_enc_dec(source,reuse=False) :
         decoder_spec = []
         for l,(in_,out_,size_) in enumerate([(128,64,image_size//2),(64,32,image_size)]):
             decoder_spec += [
-                TransposedConv2d('tconv_%d'%(l+1),in_,[batch_size,out_,size_,size_],3,3,2,2),
+                TransposedConv2d('tconv_%d'%(l+1),in_,[batch_size,out_,size_,size_],4,4,2,2),
                 InstanceNorm('tconv_in_%d'%(l+1)),
                 Lrelu()
             ]
@@ -43,18 +43,18 @@ def build_enc_dec(source,reuse=False) :
     return target
 
 def build_critic(_t) :
-    _, channels, _, _ = _t.get_shape().as_list()
+    _, channels, image_size, _ = _t.get_shape().as_list()
 
     c_spec = []
     for l,(in_,out_) in enumerate(
-        [(channels,64),(64,128),(128,256),(256,512),(512,512)]):
+        [(channels,64),(64,128),(128,256),(256,256),(256,256)]):
         c_spec +=[
             Conv2d('conv2d_%d'%(l+1),in_,out_,4,4,2,2),
             #InstanceNorm('conv2d_in_%d'%(l+1)),
             Lrelu(),
         ]
     c_spec += [
-        Linear('linear_1',512,512),
+        Linear('linear_1',image_size//32*image_size//32*256,512),
         Lrelu(),
         Linear('linear_2',512,512),
         Lrelu(),
