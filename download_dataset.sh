@@ -11,7 +11,7 @@ fi
 URL=https://people.eecs.berkeley.edu/~taesung_park/CycleGAN/datasets/$FILE.zip
 ZIP_FILE=./datasets/$FILE.zip
 TARGET_DIR=./datasets/$FILE/
-wget -N $URL -O $ZIP_FILE
-mkdir $TARGET_DIR
+wget $URL -O $ZIP_FILE
+mkdir -p $TARGET_DIR
 unzip $ZIP_FILE -d ./datasets/
 rm $ZIP_FILE
